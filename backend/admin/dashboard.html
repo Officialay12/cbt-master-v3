@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CBT MASTER - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* [Your existing CSS remains exactly the same] */
+        :root {
+            --primary-dark: #0a0a14;
+            --primary-blue: #0066ff;
+            --primary-cyan: #00ff9d;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --success: #00ff9d;
+            --warning: #ffd166;
+            --danger: #ff6b6b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .developer-info {
+            display: inline-block;
+            background: var(--bg-card);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
+            border-color: var(--primary-cyan);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-cyan);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .chart-container:hover {
+            border-color: var(--primary-cyan);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-header h3 {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-header h3 i {
+            color: var(--primary-cyan);
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-cyan) 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            color: var(--primary-cyan);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .course-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .gst101 { background: rgba(0, 102, 255, 0.2); color: #0066ff; border: 1px solid #0066ff; }
+        .gns105 { background: rgba(138, 43, 226, 0.2); color: #8a2be2; border: 1px solid #8a2be2; }
+        .mth101 { background: rgba(255, 107, 0, 0.2); color: #ff6b00; border: 1px solid #ff6b00; }
+        .phy101 { background: rgba(0, 255, 157, 0.2); color: #00ff9d; border: 1px solid #00ff9d; }
+        .bio101 { background: rgba(76, 175, 80, 0.2); color: #4caf50; border: 1px solid #4caf50; }
+        .cos101 { background: rgba(156, 39, 176, 0.2); color: #9c27b0; border: 1px solid #9c27b0; }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .grade-a { background: rgba(0, 255, 157, 0.2); color: #00ff9d; border: 1px solid #00ff9d; }
+        .grade-b { background: rgba(0, 102, 255, 0.2); color: #0066ff; border: 1px solid #0066ff; }
+        .grade-c { background: rgba(255, 209, 102, 0.2); color: #ffd166; border: 1px solid #ffd166; }
+        .grade-d { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; border: 1px solid #ff6b6b; }
+        .grade-f { background: rgba(255, 0, 0, 0.2); color: #ff0000; border: 1px solid #ff0000; }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .loading i {
+            color: var(--primary-cyan);
+            margin-right: 0.5rem;
+        }
+
+        .timestamp {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container { padding: 1rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .admin-header h1 { font-size: 1.8rem; }
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-chart-line"></i> CBT MASTER ADMIN</h1>
+            <p>Real-time Analytics & Performance Monitoring</p>
+            <div class="developer-info">
+                <i class="fas fa-user-graduate"></i>
+                <strong>Omole Ayomide David</strong> | 100-Level Mathematics Student, OOU
+            </div>
+            <div class="timestamp" id="lastUpdate">
+                Last updated: <span id="updateTime">Just now</span>
+                <i class="fas fa-circle" style="color: #00ff9d; font-size: 0.6rem; margin-left: 0.5rem;"></i>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="stat-value" id="totalExams">0</div>
+                <div class="stat-label">Exams Taken</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value" id="avgScore">0%</div>
+                <div class="stat-label">Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-calendar"></i></div>
+                <div class="stat-value" id="todayAttempts">0</div>
+                <div class="stat-label">Today's Attempts</div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-bar"></i> Course Performance</h3>
+                    <button class="refresh-btn" onclick="refreshCourseStats()">
+                        <i class="fas fa-redo"></i> Refresh
+                    </button>
+                </div>
+                <canvas id="courseChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3><i class="fas fa-chart-line"></i> Daily Activity (7 Days)</h3>
+                    <button class="refresh-btn" onclick="refreshActivityStats()">
+                        <i class="fas fa-redo"></i> Refresh
+                    </button>
+                </div>
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Grade Distribution -->
+        <div class="chart-container" style="margin-bottom: 2rem;">
+            <div class="chart-header">
+                <h3><i class="fas fa-pie-chart"></i> Grade Distribution</h3>
+                <button class="refresh-btn" onclick="refreshGradeStats()">
+                    <i class="fas fa-redo"></i> Refresh
+                </button>
+            </div>
+            <div style="display: flex; justify-content: space-around; padding: 1rem;" id="gradeDistribution">
+                <!-- Grade badges will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Recent Results -->
+        <div class="chart-container" style="grid-column: 1 / -1; margin-bottom: 2rem;">
+            <div class="chart-header">
+                <h3><i class="fas fa-table"></i> Recent Exam Results</h3>
+                <button class="refresh-btn" onclick="loadRecentResults()">
+                    <i class="fas fa-redo"></i> Refresh
+                </button>
+            </div>
+            <div id="recentResults">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading recent results...
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performers -->
+        <div class="chart-container" style="grid-column: 1 / -1">
+            <div class="chart-header">
+                <h3><i class="fas fa-trophy"></i> Top Performers</h3>
+                <button class="refresh-btn" onclick="loadTopPerformers()">
+                    <i class="fas fa-redo"></i> Refresh
+                </button>
+            </div>
+            <div id="topPerformers">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Loading top performers...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin credentials - MUST MATCH .env file
+        const ADMIN_PASSWORD = 'admin123';
+        const ADMIN_SECRET = 'ayomide100';
+
+        let courseChart, activityChart;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+            // Auto-refresh every 30 seconds
+            setInterval(loadDashboardData, 30000);
+        });
+
+        // Load all dashboard data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(
+                    `/api/admin/stats?password=${ADMIN_PASSWORD}&secret=${ADMIN_SECRET}`
+                );
+                const data = await response.json();
+
+                if (data.success) {
+                    updateStats(data.data);
+                    updateCharts(data.data);
+                    updateGradeDistribution(data.data.gradeDistribution);
+                    loadRecentResults();
+                    loadTopPerformers();
+
+                    // Update timestamp
+                    document.getElementById('updateTime').textContent =
+                        new Date().toLocaleTimeString();
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+                showError('Connection error. Make sure the server is running.');
+            }
+        }
+
+        // Update statistics cards
+        function updateStats(stats) {
+            document.getElementById('totalUsers').textContent =
+                stats.uniqueUsers?.toLocaleString() || '0';
+            document.getElementById('totalExams').textContent =
+                stats.totalExams?.toLocaleString() || '0';
+            document.getElementById('avgScore').textContent =
+                (stats.overallAvgScore || 0).toFixed(1) + '%';
+            document.getElementById('todayAttempts').textContent =
+                stats.todayAttempts?.toLocaleString() || '0';
+        }
+
+        // Update charts
+        function updateCharts(stats) {
+            updateCourseChart(stats.courseStats);
+            updateActivityChart(stats.dailyActivity);
+        }
+
+        // Course performance chart
+        function updateCourseChart(courseStats) {
+            const ctx = document.getElementById('courseChart').getContext('2d');
+
+            if (courseChart) courseChart.destroy();
+
+            if (!courseStats || courseStats.length === 0) {
+                ctx.font = '14px Poppins';
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.fillText('No data available', 50, 150);
+                return;
+            }
+
+            const courseNames = {
+                'gst101': 'GST101',
+                'gns105': 'GNS105',
+                'mth101': 'MTH101',
+                'phy101': 'PHY101',
+                'bio101': 'BIO101',
+                'cos101': 'COS101'
+            };
+
+            const colors = [
+                'rgba(0, 102, 255, 0.7)',
+                'rgba(138, 43, 226, 0.7)',
+                'rgba(255, 107, 0, 0.7)',
+                'rgba(0, 255, 157, 0.7)',
+                'rgba(76, 175, 80, 0.7)',
+                'rgba(156, 39, 176, 0.7)'
+            ];
+
+            courseChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: courseStats.map(c => courseNames[c._id] || c._id),
+                    datasets: [{
+                        label: 'Average Score (%)',
+                        data: courseStats.map(c => c.averageScore || 0),
+                        backgroundColor: colors.slice(0, courseStats.length),
+                        borderColor: colors.map(c => c.replace('0.7', '1')),
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: 'rgba(255,255,255,0.8)' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: (context) => {
+                                    const stat = courseStats[context.dataIndex];
+                                    return [
+                                        `Attempts: ${stat.attempts || 0}`,
+                                        `Best Score: ${stat.bestScore || 0}%`,
+                                        `Students: ${stat.uniqueStudents || 0}`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: 'rgba(255,255,255,0.6)' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: 'rgba(255,255,255,0.6)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Activity chart
+        function updateActivityChart(dailyActivity) {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+
+            if (activityChart) activityChart.destroy();
+
+            // Generate last 7 days if no data
+            let labels = [];
+            let data = [];
+
+            if (dailyActivity && dailyActivity.length > 0) {
+                labels = dailyActivity.map(d => {
+                    const date = new Date(d._id);
+                    return date.toLocaleDateString('en-US', { weekday: 'short' });
+                });
+                data = dailyActivity.map(d => d.count);
+            } else {
+                // Demo data
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                labels = days;
+                data = days.map(() => Math.floor(Math.random() * 40) + 20);
+            }
+
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Exam Attempts',
+                        data: data,
+                        borderColor: '#00ff9d',
+                        backgroundColor: 'rgba(0, 255, 157, 0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#00ff9d',
+                        pointBorderColor: '#fff',
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: 'rgba(255,255,255,0.8)' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: 'rgba(255,255,255,0.6)' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: 'rgba(255,255,255,0.6)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Grade distribution
+        function updateGradeDistribution(grades) {
+            const container = document.getElementById('gradeDistribution');
+
+            if (!grades || grades.length === 0) {
+                // Demo data
+                const demoGrades = [
+                    { _id: 'A', count: 234 },
+                    { _id: 'B', count: 456 },
+                    { _id: 'C', count: 345 },
+                    { _id: 'D', count: 123 },
+                    { _id: 'F', count: 89 }
+                ];
+                grades = demoGrades;
+            }
+
+            const total = grades.reduce((sum, g) => sum + g.count, 0);
+
+            let html = '';
+            grades.forEach(grade => {
+                const percentage = total > 0 ? ((grade.count / total) * 100).toFixed(1) : 0;
+                html += `
+                    <div style="text-align: center;">
+                        <span class="grade-badge grade-${grade._id.toLowerCase()}">
+                            Grade ${grade._id}
+                        </span>
+                        <div style="font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0; color: #00ff9d;">
+                            ${grade.count}
+                        </div>
+                        <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">
+                            ${percentage}%
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Load recent results
+        async function loadRecentResults() {
+            try {
+                const response = await fetch(
+                    `/api/admin/recent-results?limit=10&password=${ADMIN_PASSWORD}&secret=${ADMIN_SECRET}`
+                );
+                const data = await response.json();
+
+                const container = document.getElementById('recentResults');
+
+                if (data.success && data.data.length > 0) {
+                    let html = `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Course</th>
+                                    <th>Score</th>
+                                    <th>Grade</th>
+                                    <th>Time Used</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    data.data.forEach(result => {
+                        const courseId = result.course?.toLowerCase() || '';
+                        const date = new Date(result.timestamp).toLocaleDateString();
+                        const gradeClass = `grade-${result.grade?.toLowerCase() || 'f'}`;
+
+                        html += `
+                            <tr>
+                                <td><code>${result.userId?.substring(0, 8) || 'N/A'}...</code></td>
+                                <td>
+                                    <span class="course-badge ${courseId}">
+                                        ${result.courseName || result.course}
+                                    </span>
+                                </td>
+                                <td><strong style="color: #00ff9d;">${result.score || 0}%</strong></td>
+                                <td><span class="grade-badge ${gradeClass}">${result.grade || 'F'}</span></td>
+                                <td>${result.timeUsed || '20:00'}</td>
+                                <td>${date}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += '</tbody></table>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="loading">
+                            <i class="fas fa-info-circle"></i> No recent results found
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to load recent results:', error);
+                document.getElementById('recentResults').innerHTML = `
+                    <div class="loading" style="color: #ff6b6b;">
+                        <i class="fas fa-exclamation-triangle"></i> Error loading results
+                    </div>
+                `;
+            }
+        }
+
+        // Load top performers
+        async function loadTopPerformers() {
+            try {
+                const response = await fetch(
+                    `/api/admin/top-performers?password=${ADMIN_PASSWORD}&secret=${ADMIN_SECRET}`
+                );
+                const data = await response.json();
+
+                const container = document.getElementById('topPerformers');
+
+                if (data.success && data.data.length > 0) {
+                    let html = `
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>User ID</th>
+                                    <th>Course</th>
+                                    <th>Best Score</th>
+                                    <th>Attempts</th>
+                                    <th>Latest Attempt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    data.data.forEach((user, index) => {
+                        const courseId = user.course?.toLowerCase() || '';
+                        const date = new Date(user.latestAttempt).toLocaleDateString();
+
+                        html += `
+                            <tr>
+                                <td><strong style="color: #ffd166;">#${index + 1}</strong></td>
+                                <td><code>${user.userId?.substring(0, 8) || 'N/A'}...</code></td>
+                                <td>
+                                    <span class="course-badge ${courseId}">
+                                        ${user.courseName || user.course}
+                                    </span>
+                                </td>
+                                <td><strong style="color: #00ff9d; font-size: 1.2rem;">${user.bestScore || 0}%</strong></td>
+                                <td>${user.attempts || 1}</td>
+                                <td>${date}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += '</tbody></table>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="loading">
+                            <i class="fas fa-info-circle"></i> No top performers yet
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Failed to load top performers:', error);
+                document.getElementById('topPerformers').innerHTML = `
+                    <div class="loading" style="color: #ff6b6b;">
+                        <i class="fas fa-exclamation-triangle"></i> Error loading performers
+                    </div>
+                `;
+            }
+        }
+
+        // Refresh functions
+        function refreshCourseStats() {
+            loadDashboardData();
+            showToast('Refreshing course statistics...');
+        }
+
+        function refreshActivityStats() {
+            loadDashboardData();
+            showToast('Refreshing activity data...');
+        }
+
+        function refreshGradeStats() {
+            loadDashboardData();
+            showToast('Refreshing grade distribution...');
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #0066ff, #00ff9d);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 500;
+                box-shadow: 0 5px 20px rgba(0,255,157,0.3);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Error handler
+        function showError(message) {
+            console.error('Dashboard Error:', message);
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.insertAdjacentHTML('beforebegin', `
+                <div style="
+                    background: rgba(255, 107, 107, 0.1);
+                    border: 1px solid #ff6b6b;
+                    color: #ff6b6b;
+                    padding: 1rem;
+                    border-radius: 8px;
+                    margin-bottom: 1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                ">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ${message}
+                </div>
+            `);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

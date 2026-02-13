@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CBT MASTER | Academic Excellence Platform</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="cbt.css">
+</head>
+
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrixCanvas" class="matrix-background"></canvas>
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="logo-animation">
+                <div class="logo-circle">
+                    <span class="logo-char c">C</span>
+                    <span class="logo-char b">B</span>
+                    <span class="logo-char t">T</span>
+                    <span class="logo-char m">M</span>
+                </div>
+            </div>
+            <h1 class="logo-title">CBT MASTER</h1>
+            <p class="logo-subtitle">Academic Excellence Platform</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="preloaderProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI CHAT ASSISTANT -->
+    <div class="ai-assistant" id="aiAssistant">
+        <button class="ai-toggle" id="aiChatToggle">
+            <i class="fas fa-robot"></i>
+            <span class="ai-pulse"></span>
+        </button>
+
+        <div class="ai-chat" id="aiChat">
+            <div class="ai-header">
+                <div class="ai-title">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Navigator</h3>
+                </div>
+                <button class="ai-close" id="aiClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="ai-messages" id="aiMessages">
+                <div class="message ai-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Hello! I'm your AI assistant integrated by Ayo. I can help you navigate, start practice, and provide exam tips.
+                        </p>
+                        <p>Try: "Start GST101", "Go to courses", or "Exam tips"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-input">
+                <input type="text" id="aiInput" placeholder="Type your command...">
+                <button id="aiSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                <button id="aiVoice" class="voice-btn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+
+            <div class="ai-quick-commands">
+                <button class="quick-command" data-command="start gst101">
+                    <i class="fas fa-play"></i> Start GST101
+                </button>
+                <button class="quick-command" data-command="go to courses">
+                    <i class="fas fa-compass"></i> Browse Courses
+                </button>
+                <button class="quick-command" data-command="show tips">
+                    <i class="fas fa-lightbulb"></i> Exam Tips
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- WELCOME SCREEN -->
+        <section id="welcomeScreen" class="screen active">
+            <div class="container">
+                <div class="welcome-card">
+                    <div class="welcome-header">
+                        <h1 class="main-title">
+                            <span class="title-glow">CBT</span>
+                            <span class="title-main">MASTER</span>
+                        </h1>
+                        <p class="tagline">Academic Excellence Redefined</p>
+                    </div>
+
+                    <div class="creator-section">
+                        <div class="creator-card">
+                            <div class="creator-profile">
+    <div class="creator-image">
+                <img src="creator.jpg" alt="Omole Ayomide David"
+                     class="creator-avatar-img"
+                     style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #00ff9d; box-shadow: 0 0 20px rgba(0,255,157,0.3);">
+            </div>
+                                <div class="creator-info">
+                                    <h2>Omole Ayomide David</h2>
+                                    <p class="creator-title">100-Level Mathematics Student & Full Stack Developer</p>
+                                    <div class="creator-tags">
+                                        <span class="tag"><i class="fas fa-calculator"></i> Mathematics Major</span>
+                                        <span class="tag"><i class="fas fa-code"></i> Full Stack Developer</span>
+                                        <span class="tag"><i class="fas fa-rocket"></i> Startup Founder</span>
+                                    </div>
+                                    <div class="creator-mission">
+                                        <p><i class="fas fa-bullseye"></i> Mission: Revolutionizing education through
+                                            technology</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="creator-achievements">
+                                <div class="achievement">
+                                    <div class="achievement-icon"><i class="fas fa-graduation-cap"></i></div>
+                                    <div class="achievement-content">
+                                        <h4>OOU Student</h4>
+                                        <p>100-Level Mathematics</p>
+                                    </div>
+                                </div>
+                                <div class="achievement">
+                                    <div class="achievement-icon"><i class="fas fa-code"></i></div>
+                                    <div class="achievement-content">
+                                        <h4>Full Stack Dev</h4>
+                                        <p>2+ Years Experience</p>
+                                    </div>
+                                </div>
+                                <div class="achievement">
+                                    <div class="achievement-icon"><i class="fas fa-chart-line"></i></div>
+                                    <div class="achievement-content">
+                                        <h4>Startup Founder</h4>
+                                        <p>Building CBT Master</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="features-section">
+                        <div class="section-title">
+                            <h2><i class="fas fa-star"></i> Platform Features</h2>
+                            <p>Everything you need for exam success</p>
+                        </div>
+                        <div class="features-grid">
+                            <div class="feature">
+                                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                                <h4>AI Analytics</h4>
+                                <p>Smart analysis of your performance patterns</p>
+                            </div>
+                            <div class="feature">
+                                <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                                <h4>AI Assistant</h4>
+                                <p>Voice and text command navigation</p>
+                            </div>
+                            <div class="feature">
+                                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                                <h4>Progress Tracking</h4>
+                                <p>Detailed performance analytics</p>
+                            </div>
+                            <div class="feature">
+                                <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <h4>Mobile Ready</h4>
+                                <p>Works perfectly on all devices</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="start-section">
+                        <button class="btn btn-primary btn-lg" id="startBtn">
+                            <span class="btn-content">
+                                <i class="fas fa-play-circle"></i>
+                                <span>Begin Practice Journey</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="btn-glow"></span>
+                        </button>
+                        <p class="hint">
+                            <i class="fas fa-microphone"></i>
+                            You can also say: "Start practice" or "Go to courses"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COURSE SCREEN -->
+        <section id="courseScreen" class="screen">
+            <div class="container">
+                <div class="screen-header">
+                    <button class="btn btn-back" id="backBtn">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to Home</span>
+                    </button>
+                    <div class="header-content">
+                        <h1 class="screen-title">
+                            <span class="title-glow">Select Your</span>
+                            <span class="title-main">Practice Course</span>
+                        </h1>
+                        <p class="screen-subtitle">Choose from 6 courses (35 questions, 20 minutes each)</p>
+                    </div>
+                </div>
+                <div class="course-grid" id="courseGrid"></div>
+            </div>
+        </section>
+
+        <!-- EXAM SCREEN -->
+        <section id="examScreen" class="screen">
+            <div class="exam-container">
+                <div class="exam-header">
+                    <div class="header-left">
+                        <button class="btn btn-back btn-exit" id="examBackBtn">
+                            <i class="fas fa-times"></i>
+                            <span>Exit Exam</span>
+                        </button>
+                        <div class="exam-info">
+                            <h2 id="examTitle">CBT Practice</h2>
+                            <p id="examSubtitle">Course Name</p>
+                        </div>
+                    </div>
+
+                    <div class="header-right">
+                        <div class="timer-container">
+                            <div class="timer-display">
+                                <div class="timer-circle">
+                                    <svg width="80" height="80" viewBox="0 0 100 100">
+                                        <circle class="timer-bg" cx="50" cy="50" r="45" fill="none"
+                                            stroke="rgba(255,255,255,0.1)" stroke-width="8" />
+                                        <circle class="timer-progress" id="timerProgress" cx="50" cy="50" r="45"
+                                            fill="none" stroke="#00ff9d" stroke-width="8" stroke-linecap="round"
+                                            stroke-dasharray="283" stroke-dashoffset="0" />
+                                    </svg>
+                                    <div class="timer-text" id="timerDisplay">20:00</div>
+                                </div>
+                            </div>
+                            <div class="timer-info">
+                                <span class="timer-label">Time Remaining</span>
+                                <span class="timer-warning" id="timerWarning"></span>
+                            </div>
+                        </div>
+
+                        <div class="header-actions">
+                            <button class="btn btn-action" id="fullscreenBtn" title="Toggle Fullscreen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="btn btn-action" id="themeToggleBtn" title="Toggle Dark/Light Mode">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                            <div class="user-badge">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>Student</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-content">
+                    <div class="question-panel">
+                        <div class="question-header">
+                            <div class="question-meta">
+                                <h3>Question <span id="currentQuestionNumber">1</span> of <span
+                                        id="totalQuestions">35</span></h3>
+                                <div class="status-badge" id="questionStatus">
+                                    <span>Not Answered</span>
+                                </div>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="questionProgress"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="question-body">
+                            <div class="question-text-container">
+                                <div class="question-text" id="questionText">Loading question...</div>
+                            </div>
+                            <div class="options-container" id="optionsContainer"></div>
+                        </div>
+
+                        <div class="question-footer">
+                            <button class="btn btn-secondary" id="markReviewBtn">
+                                <i class="far fa-flag"></i>
+                                <span>Mark for Review</span>
+                            </button>
+                            <div class="navigation-buttons">
+                                <button class="btn btn-secondary" id="prevBtn" disabled>
+                                    <i class="fas fa-arrow-left"></i> Previous
+                                </button>
+                                <button class="btn btn-secondary" id="nextBtn">
+                                    Next <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exam-sidebar">
+                        <div class="sidebar-section">
+                            <h4><i class="fas fa-compass"></i> Question Navigator</h4>
+                            <div class="question-grid" id="questionGrid"></div>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h4><i class="fas fa-chart-pie"></i> Progress Overview</h4>
+                            <div class="progress-stats">
+                                <div class="progress-item">
+                                    <div class="progress-label">
+                                        <span class="progress-dot answered"></span>
+                                        <span>Answered</span>
+                                    </div>
+                                    <span class="progress-count" id="answeredCount">0</span>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-label">
+                                        <span class="progress-dot not-answered"></span>
+                                        <span>Not Answered</span>
+                                    </div>
+                                    <span class="progress-count" id="notAnsweredCount">35</span>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-label">
+                                        <span class="progress-dot marked"></span>
+                                        <span>Marked</span>
+                                    </div>
+                                    <span class="progress-count" id="markedCount">0</span>
+                                </div>
+                            </div>
+                            <div class="progress-summary">
+                                <div class="progress-bar-wrapper">
+                                    <div class="progress-bar-fill" id="progressBarFill"></div>
+                                </div>
+                                <div class="progress-percentage" id="progressPercentage">0% Complete</div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <button class="btn btn-danger" id="submitExamBtn">
+                                <i class="fas fa-paper-plane"></i> Submit Exam
+                            </button>
+                            <p class="note">
+                                <i class="fas fa-info-circle"></i> Auto-submits when time expires
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS SCREEN -->
+        <section id="resultsScreen" class="screen">
+            <div class="container">
+                <div class="results-header">
+                    <h1 class="screen-title">
+                        <span class="title-main">Exam</span>
+                        <span class="title-glow">Results</span>
+                    </h1>
+                    <p id="resultsCourse" class="screen-subtitle">Course Performance Analysis</p>
+                    <div class="results-badge">
+                        <i class="fas fa-trophy"></i>
+                        <span>Performance Report</span>
+                    </div>
+                </div>
+
+                <div class="results-content">
+                    <div class="score-card">
+                        <div class="score-display">
+                            <div class="score-circle">
+                                <svg width="200" height="200" viewBox="0 0 100 100">
+                                    <circle class="score-bg" cx="50" cy="50" r="45" fill="none"
+                                        stroke="rgba(255,255,255,0.1)" stroke-width="8" />
+                                    <circle class="score-progress" id="scoreProgress" cx="50" cy="50" r="45" fill="none"
+                                        stroke="#00ff9d" stroke-width="8" stroke-linecap="round" stroke-dasharray="283"
+                                        stroke-dashoffset="0" />
+                                </svg>
+                                <div class="score-text">
+                                    <span id="finalScore" class="score-percentage">0</span>
+                                    <span class="percent-symbol">%</span>
+                                </div>
+                            </div>
+                            <div class="score-info">
+                                <h2 id="grade">Grade: -</h2>
+                                <p id="performance" class="performance-text">Performance Analysis</p>
+                                <div class="score-rank">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Score Analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card correct">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-content">
+                                <h4>Correct Answers</h4>
+                                <p id="correctAnswers" class="stat-number">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card wrong">
+                            <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+                            <div class="stat-content">
+                                <h4>Wrong Answers</h4>
+                                <p id="wrongAnswers" class="stat-number">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card time">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-content">
+                                <h4>Time Used</h4>
+                                <p id="timeUsed" class="stat-number">0:00</p>
+                            </div>
+                        </div>
+                        <div class="stat-card accuracy">
+                            <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
+                            <div class="stat-content">
+                                <h4>Accuracy Rate</h4>
+                                <p id="accuracyRate" class="stat-number">0%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-search"></i> Answer Review</h2>
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all">All Questions</button>
+                                <button class="filter-btn" data-filter="incorrect">Incorrect Only</button>
+                                <button class="filter-btn" data-filter="marked">Marked Questions</button>
+                            </div>
+                        </div>
+                        <div class="review-questions" id="reviewQuestions"></div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="retakeBtn">
+                            <i class="fas fa-redo"></i> Retake Exam
+                        </button>
+                        <button class="btn btn-secondary" id="newCourseBtn">
+                            <i class="fas fa-book"></i> New Course
+                        </button>
+                        <button class="btn btn-secondary" id="printResultsBtn">
+                            <i class="fas fa-print"></i> Print Report
+                        </button>
+                        <button class="btn btn-secondary" id="shareResultsBtn">
+                            <i class="fas fa-share-alt"></i> Share Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CBT MASTER</h3>
+                    <p>Academic Excellence Platform</p>
+                    <p class="footer-info">
+                        Developed by <strong>Omole Ayomide David</strong><br>
+                        100-Level Mathematics Student | OOU
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <div class="footer-links">
+                        <a href="https://wa.me/2349159180375" class="footer-link" id="ayocodesLink" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp: @ayocodes
+                        </a>
+<a href="/api/admin/login" class="footer-link" id="statsBtn">
+    <i class="fas fa-lock"></i>
+    <i class="fas fa-chart-line"></i>
+    Platform Stats (Admin)
+</a>
+                    </div>
+
+                    <div class="footer-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <span>Users: <span id="userCount">0</span></span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Attempts: <span id="attemptCount">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 CBT MASTER. All rights reserved. | Built by Ayomide David Omole</p>
+                <p class="version">Version 2.0 | Updated Edition</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Submission</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to submit your exam?</p>
+                <div class="modal-stats">
+                    <div class="stat">
+                        <span>Unanswered:</span>
+                        <span id="remainingQuestionsCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <span>Marked:</span>
+                        <span id="modalMarkedCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <span>Time Used:</span>
+                        <span id="modalTimeUsed">0:00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelSubmitBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmSubmitBtn">Submit Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="statsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-chart-line"></i> Platform Statistics</h3>
+                <button class="modal-close" id="statsModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-dashboard">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h4>Total Users</h4>
+                            <p id="statsTotalUsers">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-file-alt"></i>
+                        <div>
+                            <h4>Total Exams</h4>
+                            <p id="statsTotalExams">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <h4>Avg. Score</h4>
+                            <p id="statsAvgScore">0%</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Active Today</h4>
+                            <p id="statsActiveToday">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-chart">
+                    <h4>Popular Courses</h4>
+                    <div id="courseStats"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="refreshStatsBtn">Refresh</button>
+                <button class="btn btn-secondary" id="closeStatsBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VOICE INDICATOR -->
+    <div class="voice-indicator" id="voiceIndicator">
+        <div class="voice-pulse"></div>
+        <i class="fas fa-microphone"></i>
+        <p>Listening...</p>
+    </div>
+
+    <!-- LOADING OVERLAY -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p id="loadingMessage">Loading...</p>
+    </div>
+
+    <!-- AUDIO ELEMENTS -->
+    <audio id="clickSound" src="mixkit-fast-double-click-on-mouse-275.wav"></audio>
+    <audio id="correctSound" src="mixkit-correct-positive-notification-957 (1).wav"></audio>
+    <audio id="submitSound"
+        src="mixkit-achievement-bell-600.wav"></audio>
+    <audio id="successSound" src="mixkit-achievement-bell-600.wav"></audio>
+
+    <!-- SCRIPTS - SINGLE FILE ONLY -->
+    <script src="app.js"></script>
+    <script src="matrix.js"></script>
+    <script src="questions.js"></script>
+    <script src="ai-chat.js"></script>
+</body>
+
+</html>
